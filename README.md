@@ -10,7 +10,7 @@
 ## 담당 역할
 
 **게임 시스템 로직 설계 및 UI 구현**  
-GameManager · UIManager · SaveManager · EscapeTriggerController · 장애물 스크립트 (Enemy · MissileHazard · Spike)
+GameManager · UIManager · SaveManager · EscapeTriggerController · 장애물 스크립트 (Enemy · MissileHazard · Spike · MovingSpike · Key)
 
 ## 주요 구현
 
