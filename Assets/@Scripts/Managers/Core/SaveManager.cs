@@ -9,7 +9,7 @@ public class SaveManager : MonoBehaviour
     private void Awake()
     {
 #if UNITY_EDITOR
-        savePath = "Assets/Resources/save.json";
+        savePath = "Assets/@Resources/save.json";
 #else
         savePath = Application.persistentDataPath + "/save.json";
 #endif
@@ -26,6 +26,10 @@ public class SaveManager : MonoBehaviour
 
     public void Save(SaveData data)
     {
+        string directory = Path.GetDirectoryName(savePath);
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
         Debug.Log("저장 완료: " + savePath);
