@@ -14,72 +14,72 @@ public class MovingHazard : MonoBehaviour
     public float speed = 5f;
     public float waitAtNode = 0f; // 끝점에서 잠시 대기(초)
 
-    Vector3 _a, _b;
-    float _t; // 0: _a ~ 1: _b, _t = 0.5이면 _a와 _b의 중간
-    int _dir = 1; // 1: A->B, -1: B->A
-    float _waitTimer;
+    Vector3 startPos, endPos;
+    float moveT; // 0: startPos ~ 1: endPos
+    int moveDir = 1; // 1: A->B, -1: B->A
+    float waitTimer;
 
     Rigidbody2D _rb;
-    TimeAffected _timeAffected;
+    TimeAffected timeAffected;
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _timeAffected = GetComponent<TimeAffected>();
+        timeAffected = GetComponent<TimeAffected>();
         RecalcEndpoints();
-        _t = 0f;
+        moveT = 0f;
     }
 
     void RecalcEndpoints()
     {
         var here = transform.position;
-        _a = pointA ? pointA.position : here;
-        _b = pointB ? pointB.position : (here + Vector3.right * 3f);
+        startPos = pointA ? pointA.position : here;
+        endPos = pointB ? pointB.position : (here + Vector3.right * 3f);
     }
 
     void FixedUpdate()
     {
-        float scaledDeltaTime = Time.fixedDeltaTime * _timeAffected.currentTimeScale;
+        float scaledDeltaTime = Time.fixedDeltaTime * timeAffected.currentTimeScale;
         TickMove(scaledDeltaTime);
     }
 
     void TickMove(float dt)
     {
-        if (_waitTimer > 0f)
+        if (waitTimer > 0f)
         {
-            _waitTimer -= dt;
+            waitTimer -= dt;
             return;
         }
         
-        float dist = Vector3.Distance(_a, _b);
+        float dist = Vector3.Distance(startPos, endPos);
         if (dist < 1e-4f) return;
 
-        _t += (_dir * speed * dt) / dist;
-        _t = Mathf.Clamp01(_t);
+        moveT += (moveDir * speed * dt) / dist;
+        moveT = Mathf.Clamp01(moveT);
 
-        Vector3 next = Vector3.Lerp(_a, _b, _t);
+        Vector3 next = Vector3.Lerp(startPos, endPos, moveT);
         _rb.MovePosition(next);
         
         if (loopMode == LoopMode.PingPong)
         {
-            if (_t >= 1f || _t <= 0f)
+            if (moveT >= 1f || moveT <= 0f)
             {
-                _dir *= -1;
+                moveDir *= -1;
                 // 오브젝트 회전 추가하기   
-                if (waitAtNode > 0f) _waitTimer = waitAtNode;
+                if (waitAtNode > 0f) waitTimer = waitAtNode;
             }
         }
         else if (loopMode == LoopMode.Restart)
         {
-            if (next == _b)
+            if (next == endPos)
             {
-                if (waitAtNode > 0f) _waitTimer = waitAtNode;
+                if (waitAtNode > 0f) waitTimer = waitAtNode;
                 // 시작점으로 즉시 워프 후 다음 프레임부터 다시 B로 향함
                 if (_rb != null)
                 {
-                    _rb.position = _a;
-                    _t = 0f;
+                    _rb.position = startPos;
+                    moveT = 0f;
                 }
-                else transform.position = _a;
+                else transform.position = startPos;
             }
         }
     }

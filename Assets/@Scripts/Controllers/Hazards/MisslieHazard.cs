@@ -71,7 +71,7 @@ public class MissileHazard : MonoBehaviour
 
             if (_target == null)
             {
-                _rb.velocity = transform.right * currentSpeed;
+                _rb.linearVelocity = transform.right * currentSpeed;
                 return;
             }
 
@@ -79,14 +79,14 @@ public class MissileHazard : MonoBehaviour
             {
                 _rb.angularVelocity = 0f;
                 _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                _rb.velocity = (Vector2)transform.right * currentSpeed;
+                _rb.linearVelocity = (Vector2)transform.right * currentSpeed;
             }
             else if (guidanceMode == GuidanceMode.Guided)
             {
                 Vector2 toTarget = ((Vector2)_target.position - _rb.position).normalized;
                 float rotateAmount = Vector3.Cross(toTarget, transform.right).z;
                 _rb.angularVelocity = -rotateAmount * currentRotateSpeed;
-                _rb.velocity = (Vector2)transform.right * currentSpeed;
+                _rb.linearVelocity = (Vector2)transform.right * currentSpeed;
             }
         }
     }
@@ -125,9 +125,9 @@ public class MissileHazard : MonoBehaviour
                     explosion.gameObject.SetActive(true);
                     Destroy(explosion.gameObject, 0.02f);
                 }   
-                _rb.velocity = Vector2.zero;
+                _rb.linearVelocity = Vector2.zero;
                 _rb.angularVelocity = 0f;
-                _rb.isKinematic = true;
+                _rb.bodyType = RigidbodyType2D.Kinematic;
                 _rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 gameObject.GetComponent<Collider2D>().enabled = false;
 
