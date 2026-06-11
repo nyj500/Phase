@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (GameManager.Instance.currentStageNum == 5 && GameManager.Instance.skillGrade == 1)
+        if (StageManager.Instance.currentStageNum == 5 && StageManager.Instance.skillGrade == 1)
         {
             skillGuideSprite.SetActive(true);
         }
@@ -103,8 +103,8 @@ public class UIManager : MonoBehaviour
         {
             skillGuideSprite.SetActive(false);
         }
-        GameManager.Instance.currentStageNum = 1;
-        GameManager.Instance.skillGrade = 0;
+        StageManager.Instance.currentStageNum = 1;
+        StageManager.Instance.skillGrade = 0;
         SaveData loaded = SaveManager.Instance.Load();
         if (loaded != null)
         {
@@ -125,8 +125,8 @@ public class UIManager : MonoBehaviour
         SaveData loaded = SaveManager.Instance.Load();
         if (loaded != null)
         {
-            GameManager.Instance.currentStageNum = loaded.currentStage;
-            GameManager.Instance.skillGrade = loaded.skillGrade;
+            StageManager.Instance.currentStageNum = loaded.currentStage;
+            StageManager.Instance.skillGrade = loaded.skillGrade;
             GameManager.Instance.clearCnt = loaded.clearCnt;
         }
 
@@ -137,8 +137,8 @@ public class UIManager : MonoBehaviour
     public void OnClickSave()
     {
         SaveData save = new SaveData();
-        save.currentStage = GameManager.Instance.currentStageNum;
-        save.skillGrade = GameManager.Instance.skillGrade;
+        save.currentStage = StageManager.Instance.currentStageNum;
+        save.skillGrade = StageManager.Instance.skillGrade;
         save.clearCnt = GameManager.Instance.clearCnt;
         SaveManager.Instance.Save(save);
     }

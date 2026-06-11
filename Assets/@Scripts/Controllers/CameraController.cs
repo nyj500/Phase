@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
         // currentStageIndex = GameManager.Instance.currentStageNum - 1;
         // Transform nextStage = cameraStages[currentStageIndex];
         // transform.position = new Vector3(nextStage.position.x, nextStage.position.y, transform.position.z);
-        currentStageIndex = GameManager.Instance.currentStageNum - 2;
+        currentStageIndex = StageManager.Instance.currentStageNum - 2;
         MoveToNextStage();
         Debug.Log("camera: " + currentStageIndex);
     }

@@ -37,7 +37,7 @@ public class PlayerToolTip : MonoBehaviour
             return;
         }
 
-        int currentStage = GameManager.Instance.currentStageNum;
+        int currentStage = StageManager.Instance.currentStageNum;
         GameManager.GameState currentState = GameManager.Instance.State;
 
         if (currentStage <= activeUntilStage && currentState != GameManager.GameState.GameOver)

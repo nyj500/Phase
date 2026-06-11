@@ -110,7 +110,7 @@ public class EscapeTriggerController : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null)
         {
-            GameManager.Instance.IncreaseStage();
+            StageManager.Instance.IncreaseStage();
         }
     }
 }
