@@ -12,8 +12,12 @@ public class SoundManager : MonoBehaviour
     private AudioSource _sfxSource;
     private Coroutine _bgmFadeCoroutine;
     public float bgmVolume = 1f;
-    public float globalMaxBgmVolume = 0.3f; 
+    public float globalMaxBgmVolume = 0.3f;
     public float sfxVolume = 1f;
+
+    [Header("[UI Sounds]")]
+    public AudioClip buttonHoverClip;
+    public AudioClip buttonClickClip;
 
 
     private void Awake()

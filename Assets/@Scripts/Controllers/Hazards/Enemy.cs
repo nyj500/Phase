@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     public bool isPlayerDetected = false;
     public bool isShooting = false;
-    private GameObject missilePrefab;
+    [SerializeField] private GameObject missilePrefab;
     private Transform missilePos;
     Quaternion missileRot;
     private Transform missileParent;
@@ -43,11 +43,6 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
-        missilePrefab = Resources.Load<GameObject>("Prefabs/Objects/Missile");
-        if (missilePrefab == null)
-        {
-            Debug.LogError("Enemy can't find Missile prefab");
-        }
         missilePos = transform.Find("MissilePos"); // 미사일 나오는 위치
         if (missileParent == null)
         {

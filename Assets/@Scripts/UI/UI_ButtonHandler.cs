@@ -15,15 +15,8 @@ public class UI_ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerUpH
     public Vector3 offset = new Vector3(-30f, 0f, 0f);
     private Transform _originalParent;
 
-    public AudioClip buttonHoverClip;
-    public AudioClip buttonClickClip;
-
     void Awake()
     {
-     //   arrow = GameObject.Find("Arrow").GetComponent<RectTransform>();
-        buttonHoverClip = Resources.Load<AudioClip>("Sounds/buttonHover");
-        buttonClickClip = Resources.Load<AudioClip>("Sounds/buttonClick");
-
         if (onButtonTextImg != null || offButtonTextImg != null)
         {
             OnClickOn();
@@ -50,12 +43,12 @@ public class UI_ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerUpH
         arrow.SetParent(buttonRect);
         arrow.anchoredPosition = offset;
 
-        SoundManager.Instance.PlaySfx(buttonHoverClip);
+        SoundManager.Instance.PlaySfx(SoundManager.Instance.buttonHoverClip);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        SoundManager.Instance.PlaySfx(buttonClickClip);
+        SoundManager.Instance.PlaySfx(SoundManager.Instance.buttonClickClip);
     }
 
     public void OnPointerUp(PointerEventData eventData)
