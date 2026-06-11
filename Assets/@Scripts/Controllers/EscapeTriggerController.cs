@@ -7,24 +7,34 @@ public class EscapeTriggerController : MonoBehaviour
 {
     static bool isSfxPlaying = false;
 
-    public GameObject groundCheckObject; // �ر� �� ��Ȱ��ȭ �� ������Ʈ
-    public GameObject[] fragmentPrefabs; // 파편 프리팹
-    public float explosionForce = 300f; // 폭발 힘
-    public float torqueAmount = 100f; // 회전 힘
-    private bool hasShattered = false; // 한 번만 실행되도록 하는 상태 변수
+    public GameObject groundCheckObject;
+    public GameObject[] fragmentPrefabs;
+    public float explosionForce = 300f;
+    public float torqueAmount = 100f;
+    private bool hasShattered = false;
     public AudioClip escapeClip;
+
+    private Collider2D collider2D;
+    private SpriteRenderer spriteRenderer;
+    private LockCore[] lockCores;
+    private Key[] keys;
+    private PushLockCore[] pushLockCores;
+
+    void Awake()
+    {
+        collider2D = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    void Start()
+    {
+        lockCores = FindObjectsByType<LockCore>(FindObjectsSortMode.None);
+        keys = FindObjectsByType<Key>(FindObjectsSortMode.None);
+        pushLockCores = FindObjectsByType<PushLockCore>(FindObjectsSortMode.None);
+    }
 
     void Update()
     {
-        // if (CanEnableEscapeTrigger())
-        // {
-        //     Collider2D collider2D = GetComponent<Collider2D>();
-        //     if (collider2D != null) collider2D.isTrigger = true;
-        //     TilemapRenderer tilemapRenderer = GetComponent<TilemapRenderer>();
-        //     if (tilemapRenderer != null) tilemapRenderer.enabled = false;
-        // }
-        Collider2D collider2D = GetComponent<Collider2D>();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (CanEnableEscapeTrigger())
         {
             if (!isSfxPlaying)
@@ -59,6 +69,7 @@ public class EscapeTriggerController : MonoBehaviour
             isSfxPlaying = false;
         }
     }
+
     void Shatter()
     {
         if (fragmentPrefabs == null || fragmentPrefabs.Length == 0)
@@ -80,27 +91,17 @@ public class EscapeTriggerController : MonoBehaviour
             }
         }
     }
+    
     bool CanEnableEscapeTrigger()
     {
-        LockCore[] lockCores = FindObjectsByType<LockCore>(FindObjectsSortMode.None);
-        foreach (LockCore lockObject in lockCores)
-        {
-            if (lockObject.isBroken == false) return false;
-        }
+        foreach (LockCore lockCore in lockCores)
+            if (!lockCore.isBroken) return false;
 
-        Key[] keys = FindObjectsByType<Key>(FindObjectsSortMode.None);
         foreach (Key key in keys)
-        {
-            if (key.isAcquired == false) return false;
-        }
+            if (!key.isAcquired) return false;
 
-        PushLockCore[] pushLockCores = FindObjectsByType<PushLockCore>(FindObjectsSortMode.None);
         foreach (PushLockCore pushLockCore in pushLockCores)
-        {
-            if (pushLockCore.isPushed == false) return false;
-        }
-
-        if (lockCores.Length == 0 && keys.Length == 0 && pushLockCores.Length == 0) return true;
+            if (!pushLockCore.isPushed) return false;
 
         return true;
     }
