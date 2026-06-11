@@ -95,7 +95,7 @@ public class StageManager : MonoBehaviour
         else if (currentStageNum == 15) skillGrade = 2;
     }
 
-    private void ApplySkillForGrade()
+    public void ApplySkillForGrade()
     {
         switch (skillGrade)
         {

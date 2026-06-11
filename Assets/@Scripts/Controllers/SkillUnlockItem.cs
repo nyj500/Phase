@@ -37,35 +37,15 @@ public class SkillUnlockItem : MonoBehaviour
                 cameraController.RestoreCameraPosz();
             }
 
-            SkillController skill = collision.GetComponent<SkillController>();
-            if (skill == null)
-            {
-                return;
-            }
+            if (collision.GetComponent<SkillController>() == null) return;
+
             switch (itemType)
             {
-                case UpgradeType.UnLock:
-                    skill.enabled = true;
-                    StageManager.Instance.skillGrade = 1;
-                    UIManager.Instance.UnlockSkill();
-                    break;
-                case UpgradeType.Upgrade_1:
-                    StageManager.Instance.skillGrade = 2;
-                    skill.releasePointMoveSpeed = 10f;
-                    skill.circleShrinkSpeed = 1f;   
-                    skill.circleGrowSpeed = 0.7f;
-                    skill.finalDashForce = 15f;
-                    skill.UpdateCircleSize(new Vector3(3f, 3f, 2f));
-                    break;
-                case UpgradeType.Upgrade_2:
-                    StageManager.Instance.skillGrade = 3;
-                    skill.releasePointMoveSpeed = 15f;
-                    skill.circleShrinkSpeed = 2f;
-                    skill.circleGrowSpeed = 0.5f;
-                    skill.finalDashForce = 20f;
-                    skill.UpdateCircleSize(new Vector3(5f, 5f, 2f));
-                    break;
+                case UpgradeType.UnLock:    StageManager.Instance.skillGrade = 1; break;
+                case UpgradeType.Upgrade_1: StageManager.Instance.skillGrade = 2; break;
+                case UpgradeType.Upgrade_2: StageManager.Instance.skillGrade = 3; break;
             }
+            StageManager.Instance.ApplySkillForGrade();
             SoundManager.Instance.PlaySfx(launchClip);
             gameObject.SetActive(false);
         }
